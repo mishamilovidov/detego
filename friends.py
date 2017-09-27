@@ -9,9 +9,27 @@ auth.set_access_token(access_token, access_token_secret)
 # Creation of the actual interface, using authentication
 api = tweepy.API(auth)
 
-# Get all the people the user follows
-friends = api.friends_ids("KingJames")
+nbaplayers = ['KingJames','KyrieIrving']
+followers = {}
+verified = {}
+nba_followers = {}
 
-# Print out each one
-for id in friends:
-    print(api.get_user(id))
+# Get all the people the user follows
+for x in nbaplayers:
+    friends = api.friends_ids(x)
+    for y in friends:
+        current_friend = api.get_user(y)
+        if current_friend.screen_name not in followers:
+            followers[current_friend.screen_name] = current_friend.followers_count
+            verified[current_friend.screen_name] = current_friend.verified
+        if current_friend.screen_name not in nba_followers:
+            nba_followers[current_friend.screen_name] = []
+        nba_followers[current_friend.screen_name].append(x)
+        print(len(followers))
+        print(len(verified))
+        print(len(nba_followers))
+
+# Print the results
+print(followers)
+print(verified)
+print(nba_followers)
